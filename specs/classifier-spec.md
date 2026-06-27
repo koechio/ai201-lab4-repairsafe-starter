@@ -36,21 +36,21 @@ Determine whether a home repair question is safe to answer directly, requires a 
 
 ### Tier definitions
 
-*Write a one-sentence definition for each tier that is precise enough to use as part of your classification prompt. Vague definitions produce inconsistent classifications.*
+
+
 
 **safe:**
-```
-[your definition here]
+```Routine maintenance and low-risk repairs. Most homeowners can complete these without specialized training or tools. | Patching drywall, painting, replacing a light bulb, unclogging a drain, tightening hardware, replacing weather stripping |
 ```
 
 **caution:**
 ```
-[your definition here]
+ Repairs where mistakes are costly, require some skill, or involve mild risk of injury. Doable for motivated homeowners, but worth careful consideration. | Replacing a faucet, resetting a GFCI outlet, replacing a toilet flapper, installing a ceiling fan, basic tile work |
 ```
 
 **refuse:**
 ```
-[your definition here]
+Repairs where an amateur mistake can cause fire, flooding, structural failure, injury, or death — or where local code requires a licensed professional. | Electrical panel work, gas line repair, structural modifications, main water line work, load-bearing wall removal, roof framing |
 ```
 
 ---
@@ -62,19 +62,25 @@ Determine whether a home repair question is safe to answer directly, requires a 
 *Consider: what happens when a question is genuinely ambiguous — e.g., "can I replace my own outlets?" Which tier should that land in, and how does your approach handle questions at the boundary?*
 
 ```
-[your answer here]
+I want the llm to reason step by step. This output will be sent back in a json t output. If a question is ambigous the llm should output that the question is ambiguous. It should add clarifying questions and ask the user to rephrase the question
 ```
 
 ---
 
-### Output format
+### Output formatoutp
 
 *How will the LLM communicate the tier and reason back to you? Describe the exact text format you'll ask it to use, so you can parse it reliably.*
 
 *The format you used in Lab 3 (`Label: X / Reasoning: Y`) is a reasonable starting point, but you're not required to use it. Whatever you choose, you'll need to parse it in code — so consider how much variation the LLM might introduce and how you'll handle that.*
 
 ```
-[your answer here]
+The llm should return a structured json formant like this:
+{
+  "tier": "",
+  "reasoning": "repairing electrical outlets is risky. If not done well it can lead to fires, shocks or death "
+}
+
+
 ```
 
 ---
@@ -85,12 +91,16 @@ Determine whether a home repair question is safe to answer directly, requires a 
 
 **System message:**
 ```
-[your prompt here]
+You are a strict home repair JSON classification assistant tasked to classify user prompts into exactly one of these four labels:
+- safe: Routine maintenance and low-risk repairs. Most homeowners can complete these without specialized training or tools.For example. Patching drywall, painting, replacing a light bulb, unclogging a drain, tightening hardware, replacing weather stripping
+- caution: Repairs where mistakes are costly, require some skill, or involve mild risk of injury. Doable for motivated homeowners, but worth careful consideration. For example Replacing a faucet, resetting a GFCI outlet, replacing a toilet flapper, installing a ceiling fan, basic tile work 
+- Refuse: Repairs where an amateur mistake can cause fire, flooding, structural failure, injury, or death — or where local code requires a licensed professional. Electrical panel work, gas line repair, structural modifications, main water line work, load-bearing wall removal, roof framing. Also classify questions that do not relate to home repair as refuse e.g write me a python script
+
 ```
 
 **User message:**
 ```
-[your prompt here]
+How do i repair electrical outlets
 ```
 
 ---
@@ -100,7 +110,7 @@ Determine whether a home repair question is safe to answer directly, requires a 
 *The most consequential classification decision is whether a question lands in "caution" or "refuse." Write down your rule for this boundary — one sentence. Then give two examples of questions that sit close to the line and explain which side they fall on and why.*
 
 ```
-[your rule and examples here]
+Caution repair tasks are risky but doable if the right precautions are taken. Refuse are very risky and should be done by a qualified professional. For example. I just spilled water on my electrical outlet. How do I dry it. (caution). the llm should recommend the homeowner to turn off the electricity first. How do i move my electrical outlet(refuse). Its risky and can cause fire. Should be done by a professional
 ```
 
 ---
@@ -112,7 +122,18 @@ Determine whether a home repair question is safe to answer directly, requires a 
 *Note: failing open (returning "safe" as a fallback) is more dangerous than failing closed (returning "caution"). Which makes more sense here, and why?*
 
 ```
-[your answer here]
+The llm will be reprompted. This time with the output. Here is the prompt.
+
+Return a json classification similar to this:
+{
+  "tier": "",
+  "reasoning": "repairing electrical outlets is risky. If not done well it can lead to fires, shocks or death "
+}
+
+
+```
+```
+User: the response
 ```
 
 ---

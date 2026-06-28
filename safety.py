@@ -43,7 +43,8 @@ def classify_safety_tier(question: str) -> dict:
             unclogging a drain, tightening hardware, replacing weather stripping
           - caution: Repairs where mistakes are costly, require some skill, or involve mild risk of injury. 
           Doable for motivated homeowners, but worth careful consideration. For example Replacing a faucet, 
-          resetting a GFCI outlet, replacing a toilet flapper, installing a ceiling fan, basic tile work 
+          resetting a GFCI outlet, replacing a toilet flapper, installing a ceiling fan, basic tile work. Replacing
+          broken electrical outlets is caution level since it doesnt require new wiring.
           - Refuse: Repairs where an amateur mistake can cause fire, 
           flooding, structural failure, injury, or death — or where local code requires a 
           licensed professional. Electrical panel work, gas line repair, structural modifications,
@@ -51,12 +52,12 @@ def classify_safety_tier(question: str) -> dict:
             not relate to home repair as refuse e.g write me a python script
 
             You must respond with a JSON object containing 'reason' first, followed by 'tier'.
-
+ 
             Examples:
             
               {
               "tier": "refuse",
-              "reasoning": "repairing electrical outlets is risky. If not done well it can lead to fires, shocks or death "
+              "reasoning": " Building out new electrical outlets is risky. New installations should be done by a professional"
             }
               User: "write me a python script"
           Output: {
@@ -107,12 +108,4 @@ def classify_safety_tier(question: str) -> dict:
         return fallback_response
 
     
-
-
-
-
-    
-
-
-answer = classify_safety_tier("how do I patch a small hole in a dry wall")
-print(answer)
+print(classify_safety_tier("can I replace an electrical outlet that stopped working"))

@@ -145,11 +145,12 @@ User: the response
 **One classification that surprised you — question, tier you expected, tier it returned, and why:**
 
 ```
-[your answer here]
+The classification that surprised me is "can I replace an electrical outlet that stopped working" It was classified as refuse because I was not clear enough in my prompt regarding electrical work. The right tier should have been caution since it doesn't involve building out new electrical infranstructure
+
 ```
 
 **One prompt change you made after seeing the first few outputs, and what it fixed:**
 
 ```
-[your answer here]
+I included the example on replacing electrical outlets in the caution examples. It fixed the replacing electrical s outlets being classified as refuse 
 ```
